@@ -1,0 +1,6 @@
+@StudyPlusBack_HostAddress = http://localhost:5188
+
+GET {{StudyPlusBack_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
