@@ -352,3 +352,4 @@ C:\Users\SANTIAGO VIDES\Documents\proyectos\inscripcion de cursos\StudyPlusBack\
 C:\Users\SANTIAGO VIDES\Documents\proyectos\inscripcion de cursos\StudyPlusBack\StudyPlusBack\StudyPlusBack\StudyPlusBack\obj\Debug\net8.0\StudyPlusBack.pdb
 C:\Users\SANTIAGO VIDES\Documents\proyectos\inscripcion de cursos\StudyPlusBack\StudyPlusBack\StudyPlusBack\StudyPlusBack\obj\Debug\net8.0\StudyPlusBack.genruntimeconfig.cache
 C:\Users\SANTIAGO VIDES\Documents\proyectos\inscripcion de cursos\StudyPlusBack\StudyPlusBack\StudyPlusBack\StudyPlusBack\obj\Debug\net8.0\ref\StudyPlusBack.dll
+C:\Users\SANTIAGO VIDES\Documents\proyectos\inscripcion de cursos\StudyPlusBack\StudyPlusBack\StudyPlusBack\StudyPlusBack\obj\Debug\net8.0\StudyPlusBack.sourcelink.json
