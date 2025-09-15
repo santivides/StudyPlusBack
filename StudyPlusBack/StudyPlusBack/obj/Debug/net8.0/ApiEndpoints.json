@@ -79,6 +79,243 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "StudyPlusBack.Controllers.InscriptionController",
+    "Method": "getAll",
+    "RelativePath": "api/inscription",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "StudyPlusBack.Controllers.InscriptionController",
+    "Method": "create",
+    "RelativePath": "api/inscription",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newInscription",
+        "Type": "StudyPlusBack.Dtos.Inscription.createInscriptionDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "StudyPlusBack.Controllers.InscriptionController",
+    "Method": "getById",
+    "RelativePath": "api/inscription/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "StudyPlusBack.Controllers.InscriptionController",
+    "Method": "updateInscription",
+    "RelativePath": "api/inscription/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "inscriptionDto",
+        "Type": "StudyPlusBack.Dtos.Inscription.updateInscriptionDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "StudyPlusBack.Controllers.InscriptionController",
+    "Method": "deleteInscription",
+    "RelativePath": "api/inscription/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "StudyPlusBack.Controllers.LectionController",
+    "Method": "getAll",
+    "RelativePath": "api/lection",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "StudyPlusBack.Controllers.LectionController",
+    "Method": "createLection",
+    "RelativePath": "api/lection",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "lectionDto",
+        "Type": "StudyPlusBack.Dtos.Lections.createLectionDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "StudyPlusBack.Controllers.LectionController",
+    "Method": "getById",
+    "RelativePath": "api/lection/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "StudyPlusBack.Controllers.LectionController",
+    "Method": "updateLection",
+    "RelativePath": "api/lection/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "lectionDto",
+        "Type": "StudyPlusBack.Dtos.Lections.updateLectionDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "StudyPlusBack.Controllers.LectionController",
+    "Method": "deleteLection",
+    "RelativePath": "api/lection/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "StudyPlusBack.Controllers.LectionProgressController",
+    "Method": "getAll",
+    "RelativePath": "api/LectionProgress",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "StudyPlusBack.Controllers.LectionProgressController",
+    "Method": "createLP",
+    "RelativePath": "api/LectionProgress",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "lp",
+        "Type": "StudyPlusBack.Dtos.LectionProgess.CreateLPDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "StudyPlusBack.Controllers.LectionProgressController",
+    "Method": "getById",
+    "RelativePath": "api/LectionProgress/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "StudyPlusBack.Controllers.LectionProgressController",
+    "Method": "updateLp",
+    "RelativePath": "api/LectionProgress/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "lpDto",
+        "Type": "StudyPlusBack.Dtos.LectionProgess.UpdateLPDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "StudyPlusBack.Controllers.LectionProgressController",
+    "Method": "deleteLectionP",
+    "RelativePath": "api/LectionProgress/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "StudyPlusBack.Controllers.UserController",
     "Method": "GetAll",
     "RelativePath": "api/user",
@@ -156,26 +393,5 @@
       }
     ],
     "ReturnTypes": []
-  },
-  {
-    "ContainingType": "StudyPlusBack.Controllers.WeatherForecastController",
-    "Method": "Get",
-    "RelativePath": "WeatherForecast",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[StudyPlusBack.WeatherForecast, StudyPlusBack, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ],
-    "EndpointName": "GetWeatherForecast"
   }
 ]

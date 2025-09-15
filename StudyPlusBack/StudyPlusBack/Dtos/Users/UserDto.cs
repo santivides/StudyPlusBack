@@ -12,7 +12,5 @@ namespace StudyPlusBack.Dtos.Users
         public string Email { get; set; } = null!;
 
         public byte Role { get; set; }
-
-        public virtual ICollection<Inscription> Inscriptions { get; set; } = new List<Inscription>();
     }
 }

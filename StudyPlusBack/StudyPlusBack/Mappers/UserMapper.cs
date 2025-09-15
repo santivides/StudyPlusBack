@@ -14,8 +14,7 @@ namespace StudyPlusBack.Mappers
                 Id = UserModel.Id,
                 Name = UserModel.Name,
                 Email = UserModel.Email,
-                Role = UserModel.Role,
-                Inscriptions = UserModel.Inscriptions
+                Role = UserModel.Role
             };
         }
 
