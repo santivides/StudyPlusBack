@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using StudyPlusBack.Dtos.Lections;
 using StudyPlusBack.Mappers;
 using StudyPlusBack.Models;
@@ -35,6 +36,31 @@ namespace StudyPlusBack.Controllers
                 return NotFound();
 
             return Ok(lection.toLectionDto());
+        }
+
+        //get all lections for a specific sourse
+        [HttpGet]
+        [Route("allLections/{id}")]
+        public IActionResult getLectionsByCourse([FromRoute] int id)
+        {
+            //gets al lections from the course and transforms them in the dto
+            var lections = _context.Lections.
+                Where(l => l.CourseId == id).
+                Select( l => new LectionDto
+                {
+                       CourseId = l.CourseId,
+                       Title = l.Title,
+                       Content = l.Content,
+                       Lorder = l.Lorder,
+                });
+
+            if (lections == null)
+            {
+                return NotFound();
+            }
+
+
+            return Ok(lections);
         }
 
         [HttpPost]

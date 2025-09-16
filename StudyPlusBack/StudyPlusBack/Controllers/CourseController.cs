@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using StudyPlusBack.Dtos.Courses;
 using StudyPlusBack.Mappers;
 using StudyPlusBack.Models;
@@ -37,6 +38,7 @@ namespace StudyPlusBack.Controllers
 
             return Ok(courseModel);
         }
+        
 
         [HttpPost]
         public IActionResult create([FromBody] CreateCourseDto courseDto) 
@@ -67,7 +69,6 @@ namespace StudyPlusBack.Controllers
             courseModel.Courselevel = courseDto.Courselevel;
             courseModel.Active = courseDto.Active;
             courseModel.ImgUrl = courseDto.ImgUrl;
-            courseModel.Lections = courseDto.Lections;
 
             _context.SaveChanges();
 

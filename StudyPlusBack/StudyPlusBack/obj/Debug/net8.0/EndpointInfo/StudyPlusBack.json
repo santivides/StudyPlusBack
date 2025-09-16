@@ -380,6 +380,29 @@
         }
       }
     },
+    "/api/lection/allLections/{id}": {
+      "get": {
+        "tags": [
+          "Lection"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/LectionProgress": {
       "get": {
         "tags": [
@@ -633,50 +656,6 @@
   },
   "components": {
     "schemas": {
-      "Course": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "courselevel": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "active": {
-            "type": "boolean"
-          },
-          "imgUrl": {
-            "type": "string",
-            "nullable": true
-          },
-          "inscriptions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Inscription"
-            },
-            "nullable": true
-          },
-          "lections": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Lection"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "CreateCourseDto": {
         "type": "object",
         "properties": {
@@ -698,13 +677,6 @@
           },
           "imgUrl": {
             "type": "string",
-            "nullable": true
-          },
-          "lections": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Lection"
-            },
             "nullable": true
           }
         },
@@ -749,114 +721,6 @@
         },
         "additionalProperties": false
       },
-      "Inscription": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "courseId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "inscriptionDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "progress": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "course": {
-            "$ref": "#/components/schemas/Course"
-          },
-          "lectionProgresses": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LectionProgress"
-            },
-            "nullable": true
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Lection": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "courseId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "content": {
-            "type": "string",
-            "nullable": true
-          },
-          "lorder": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "course": {
-            "$ref": "#/components/schemas/Course"
-          },
-          "lectionProgresses": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LectionProgress"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "LectionProgress": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "inscriptionId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "lectionId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "completed": {
-            "type": "boolean"
-          },
-          "inscription": {
-            "$ref": "#/components/schemas/Inscription"
-          },
-          "lection": {
-            "$ref": "#/components/schemas/Lection"
-          }
-        },
-        "additionalProperties": false
-      },
       "UpdateCourseDto": {
         "type": "object",
         "properties": {
@@ -878,13 +742,6 @@
           },
           "imgUrl": {
             "type": "string",
-            "nullable": true
-          },
-          "lections": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Lection"
-            },
             "nullable": true
           }
         },
@@ -925,39 +782,6 @@
           "role": {
             "type": "integer",
             "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "User": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "password": {
-            "type": "string",
-            "nullable": true
-          },
-          "role": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "inscriptions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Inscription"
-            },
-            "nullable": true
           }
         },
         "additionalProperties": false

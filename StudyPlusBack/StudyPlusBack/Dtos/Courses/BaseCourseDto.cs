@@ -13,8 +13,6 @@ namespace StudyPlusBack.Dtos.Courses
         public bool Active { get; set; }
 
         public string? ImgUrl { get; set; }
-
-        public virtual ICollection<Lection> Lections { get; set; } = new List<Lection>();
     }
 
     public class CreateCourseDto : BaseCourseDto

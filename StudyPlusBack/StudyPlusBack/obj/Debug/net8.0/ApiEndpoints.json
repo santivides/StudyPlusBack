@@ -237,6 +237,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "StudyPlusBack.Controllers.LectionController",
+    "Method": "getLectionsByCourse",
+    "RelativePath": "api/lection/allLections/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "StudyPlusBack.Controllers.LectionProgressController",
     "Method": "getAll",
     "RelativePath": "api/LectionProgress",

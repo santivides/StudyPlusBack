@@ -29,7 +29,6 @@ namespace StudyPlusBack.Mappers
                 Courselevel = createCourseDto.Courselevel,
                 Active = createCourseDto.Active,
                 ImgUrl = createCourseDto.ImgUrl,
-                Lections = createCourseDto.Lections
             };
         }
     }
