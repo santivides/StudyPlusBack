@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StudyPlusBack")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+07a1184d604f55eb50daa1d32a3ecc6c9960f7d7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bda9848a9de706e1f1028de771d04615caab1902")]
 [assembly: System.Reflection.AssemblyProductAttribute("StudyPlusBack")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StudyPlusBack")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

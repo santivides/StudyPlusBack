@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using StudyPlusBack.Dtos.Users;
+using StudyPlusBack.Interfaces;
 using StudyPlusBack.Mappers;
 using StudyPlusBack.Models;
 
@@ -11,24 +13,28 @@ namespace StudyPlusBack.Controllers
     public class UserController : Controller
     {
         private readonly StudyPlusContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public UserController(StudyPlusContext context)
+        public UserController(StudyPlusContext context, IUserRepository userRepository)
         {
             _context = context;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var users = _context.Users.ToList().Select(s => s.toUserDto());
+            var users = await _userRepository.getAll();
+            
+            var usersDto = users.Select(s => s.toUserDto());
 
-            return Ok(users);
+            return Ok(usersDto);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById([FromRoute] int id)
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var user = _context.Users.Find(id);
+            var user = await _userRepository.GetById(id);
 
             if (user == null)
             {
@@ -39,7 +45,7 @@ namespace StudyPlusBack.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreateUserDto userDto)
+        public async Task<IActionResult> Create([FromBody] CreateUserDto userDto)
         {
             if (userDto == null)
             {
@@ -47,46 +53,35 @@ namespace StudyPlusBack.Controllers
             }
 
             var userModel = userDto.toUserFromCreateDto();
-            _context.Users.Add(userModel);
-            _context.SaveChanges();
+            await _userRepository.create(userModel);
 
             return CreatedAtAction(nameof(GetById), new { id = userModel.Id }, userModel.toUserDto());
         }
 
         [HttpPut]
         [Route("{id}")]
-        public IActionResult Update([FromRoute] int id, [FromBody] UpdateUserDto userDto)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateUserDto userDto)
         {
-            var userModel = _context.Users.Find(id);
+            var userModel = await _userRepository.update(id, userDto);
 
             if(userModel == null) 
             {
                 return NotFound();
             }
 
-            userModel.Name = userDto.Name;
-            userModel.Email = userDto.Email;
-            userModel.Password = userDto.Password;
-            userModel.Role = userDto.Role;
-
-            _context.SaveChanges();
-
             return Ok(userModel.toUserDto());
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult Delete([FromRoute] int id) 
+        public async Task<IActionResult> Delete([FromRoute] int id) 
         {
-            var userModel = _context.Users.Find(id);
+            var userModel = await _userRepository.delete(id);
 
             if (userModel == null)
             {
                 return NotFound();
             }
-
-            _context.Users.Remove(userModel);
-            _context.SaveChanges();
 
             return NoContent();
         }

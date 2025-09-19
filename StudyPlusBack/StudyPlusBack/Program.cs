@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using StudyPlusBack.Interfaces;
 using StudyPlusBack.Models;
+using StudyPlusBack.Repositories;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -19,6 +21,10 @@ builder.Services.AddDbContext<StudyPlusContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SPContext"));
 });
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+
 
 var app = builder.Build();
 

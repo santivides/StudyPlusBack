@@ -9,14 +9,15 @@ namespace StudyPlusBack.Mappers
         public static CourseDto toCourseDto(this Course course) 
         {
             return new CourseDto
-            { 
+            {
                 Id = course.Id,
                 Name = course.Name,
                 Description = course.Description,
                 Courselevel = course.Courselevel,
                 Active = course.Active,
                 ImgUrl = course.ImgUrl,
-                Lections = course.Lections
+                Lections = course.Lections.Select(l => l.toLectionDto()).ToList()
+
             };
         }
 

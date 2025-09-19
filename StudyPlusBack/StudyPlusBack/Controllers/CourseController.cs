@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudyPlusBack.Dtos.Courses;
+using StudyPlusBack.Interfaces;
 using StudyPlusBack.Mappers;
 using StudyPlusBack.Models;
+using System.Threading.Tasks;
 
 namespace StudyPlusBack.Controllers
 {
@@ -12,36 +14,39 @@ namespace StudyPlusBack.Controllers
     {
 
         private readonly StudyPlusContext _context;
+        private readonly ICourseRepository _courseRepository;
         
-        public CourseController(StudyPlusContext context)
+        public CourseController(StudyPlusContext context, ICourseRepository courseRepository)
         {
             _context = context;
+            _courseRepository = courseRepository;
         }
 
         [HttpGet]
-        public IActionResult getAll()
+        public async Task<IActionResult> getAll()
         {
-            var courses = _context.Courses.ToList().Select(s => s.toCourseDto());
+            var courses = await _courseRepository.GetAll();
+            var coursesDto = courses.Select(s => s.toCourseDto());
 
-            return Ok(courses);
+            return Ok(coursesDto);
         }
 
         [HttpGet("{id}")]
-        public IActionResult getCourse([FromRoute] int id) 
+        public async Task<IActionResult> getCourse([FromRoute] int id) 
         {
-            var courseModel = _context.Courses.FirstOrDefault(s => s.Id == id);
+            var courseModel = await _courseRepository.getCourse(id);
 
             if (courseModel == null)
             {
                 return NotFound();
             }
 
-            return Ok(courseModel);
+            return Ok(courseModel.toCourseDto());
         }
         
 
         [HttpPost]
-        public IActionResult create([FromBody] CreateCourseDto courseDto) 
+        public async Task<IActionResult> create([FromBody] CreateCourseDto courseDto) 
         {
             if (courseDto == null) 
             {
@@ -49,28 +54,21 @@ namespace StudyPlusBack.Controllers
             }
 
             var courseModel = courseDto.CreateCourseDto();
-            _context.Courses.Add(courseModel);
-            _context.SaveChanges();
+            await _courseRepository.create(courseModel);
 
-            return Ok(courseModel);
+            return CreatedAtAction(nameof(getCourse), new {course = courseModel.Id}, courseModel.toCourseDto());
         }
 
         [HttpPut]
         [Route("{id}")]
-        public IActionResult update([FromRoute] int id, [FromBody] UpdateCourseDto courseDto) 
+        public async Task<IActionResult> update([FromRoute] int id, [FromBody] UpdateCourseDto courseDto) 
         {
-            var courseModel = _context.Courses.Find(id);
+            var courseModel = await _courseRepository.update(id, courseDto);
 
             if (courseModel == null)
-                return NotFound();
-
-            courseModel.Name = courseDto.Name;
-            courseModel.Description = courseDto.Description;    
-            courseModel.Courselevel = courseDto.Courselevel;
-            courseModel.Active = courseDto.Active;
-            courseModel.ImgUrl = courseDto.ImgUrl;
-
-            _context.SaveChanges();
+            {
+                return BadRequest();
+            }
 
             return Ok(courseModel);
 
@@ -78,15 +76,12 @@ namespace StudyPlusBack.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult delete([FromRoute] int id)
+        public async Task<IActionResult> delete([FromRoute] int id)
         {
-            var courseId = _context.Courses.Find(id);
+            var courseId = await _courseRepository.delete(id);
 
             if (courseId == null)
                 return NotFound();
-
-            _context.Courses.Remove(courseId);
-            _context.SaveChanges();
 
             return NoContent();
 

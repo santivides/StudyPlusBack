@@ -1,4 +1,5 @@
-﻿using StudyPlusBack.Models;
+﻿using StudyPlusBack.Dtos.Lections;
+using StudyPlusBack.Models;
 
 namespace StudyPlusBack.Dtos.Courses
 {
@@ -16,6 +17,6 @@ namespace StudyPlusBack.Dtos.Courses
 
         public string? ImgUrl { get; set; }
 
-        public virtual ICollection<Lection> Lections { get; set; } = new List<Lection>();
+        public virtual ICollection<LectionDto> Lections { get; set; } = new List<LectionDto>();
     }
 }
