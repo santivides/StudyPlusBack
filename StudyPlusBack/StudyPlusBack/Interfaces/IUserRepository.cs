@@ -11,6 +11,7 @@ namespace StudyPlusBack.Interfaces
         Task<User> create(User user);
         Task<User> update(int id, UpdateUserDto userDto);
         Task<User?> delete(int id);
+        Task<bool> userExist(int id);
 
     }
 }

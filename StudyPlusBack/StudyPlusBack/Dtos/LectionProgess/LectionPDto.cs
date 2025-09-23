@@ -2,7 +2,6 @@
 {
     public class LectionPDto
     {
-        public int Id { get; set; }
 
         public int InscriptionId { get; set; }
 

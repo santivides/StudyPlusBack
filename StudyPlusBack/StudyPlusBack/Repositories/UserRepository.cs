@@ -65,5 +65,10 @@ namespace StudyPlusBack.Repositories
 
             return userModel;
         }
+
+        public Task<bool> userExist(int id)
+        {
+            return _context.Users.AnyAsync(u => u.Id == id);
+        }
     }
 }

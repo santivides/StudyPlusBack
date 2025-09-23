@@ -1,4 +1,5 @@
-﻿using StudyPlusBack.Models;
+﻿using StudyPlusBack.Dtos.LectionProgess;
+using StudyPlusBack.Models;
 
 namespace StudyPlusBack.Dtos.Lections
 {
@@ -11,5 +12,7 @@ namespace StudyPlusBack.Dtos.Lections
         public string? Content { get; set; }
 
         public int? Lorder { get; set; }
+
+        public List<LectionPDto> lectionProgresses { get; set; } = new List<LectionPDto>();
     }
 }

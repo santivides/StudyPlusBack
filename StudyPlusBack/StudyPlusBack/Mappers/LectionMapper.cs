@@ -14,14 +14,15 @@ namespace StudyPlusBack.Mappers
                 Title = lection.Title,
                 Content = lection.Content,
                 Lorder = lection.Lorder,
+                lectionProgresses = lection.LectionProgresses.Select(l => l.toLectionPDto()).ToList()
             };
         }
 
-        public static Lection fromUserToLectionDto(this createLectionDto createLectionDto)
+        public static Lection fromUserToLection(this createLectionDto createLectionDto, int courseId)
         {
             return new Lection 
             {
-                CourseId = createLectionDto.CourseId,
+                CourseId = courseId,
                 Title = createLectionDto.Title,
                 Content = createLectionDto.Content,
                 Lorder = createLectionDto.Lorder

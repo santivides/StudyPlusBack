@@ -24,6 +24,9 @@ builder.Services.AddDbContext<StudyPlusContext>(options =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<ILectionRepository, LectionRepository>();
+builder.Services.AddScoped<ILectionProgressRepository, LectionProgressRepository>();
+builder.Services.AddScoped<IInscriptionRepository, InscriptionRepository>();
 
 
 var app = builder.Build();

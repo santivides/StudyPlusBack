@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudyPlusBack.Dtos.Lections;
+using StudyPlusBack.Interfaces;
 using StudyPlusBack.Mappers;
 using StudyPlusBack.Models;
 
@@ -12,28 +13,35 @@ namespace StudyPlusBack.Controllers
     {
 
         private readonly StudyPlusContext _context;
+        private readonly ILectionRepository _lectionRepository;
+        private readonly ICourseRepository _courseRepository;
 
-        public LectionController(StudyPlusContext context)
+        public LectionController(StudyPlusContext context, ILectionRepository lectionRepository, ICourseRepository courseRepository)
         {
             _context = context;
+            _lectionRepository = lectionRepository;
+            _courseRepository = courseRepository;
         }
 
         [HttpGet]
-        public IActionResult getAll() 
+        public async Task<IActionResult> getAll() 
         {
-            var lections = _context.Lections.Select(l => l.toLectionDto()).ToList();
+            var lections = await _lectionRepository.GetAll();
+            var lectionsDto = lections.Select(l => l.toLectionDto());
 
-            return Ok(lections);
+            return Ok(lectionsDto);
         }
 
         [HttpGet]
         [Route("{id}")]
-        public IActionResult getById([FromRoute] int id) 
+        public async Task<IActionResult> getById([FromRoute] int id) 
         {
-            var lection = _context.Lections.FirstOrDefault(l => l.Id == id);
+            var lection = await _lectionRepository.getById(id);
 
             if(lection == null)
+            {
                 return NotFound();
+            }
 
             return Ok(lection.toLectionDto());
         }
@@ -41,18 +49,10 @@ namespace StudyPlusBack.Controllers
         //get all lections for a specific sourse
         [HttpGet]
         [Route("allLections/{id}")]
-        public IActionResult getLectionsByCourse([FromRoute] int id)
+        public async Task<IActionResult> getLectionsByCourse([FromRoute] int id)
         {
             //gets al lections from the course and transforms them in the dto
-            var lections = _context.Lections.
-                Where(l => l.CourseId == id).
-                Select( l => new LectionDto
-                {
-                       CourseId = l.CourseId,
-                       Title = l.Title,
-                       Content = l.Content,
-                       Lorder = l.Lorder,
-                });
+            var lections = await _lectionRepository.getLectionsByCourse(id);
 
             if (lections == null)
             {
@@ -63,49 +63,42 @@ namespace StudyPlusBack.Controllers
             return Ok(lections);
         }
 
-        [HttpPost]
-        public IActionResult createLection([FromBody] createLectionDto lectionDto) 
+        [HttpPost("{courseId}")]
+        public async Task<IActionResult> createLection([FromRoute]int courseId, [FromBody] createLectionDto lectionDto) 
         {
-            if (lectionDto == null)
-                return BadRequest();
+            if (!await _courseRepository.courseExist(courseId))
+            {
+                return BadRequest("Course does not exist");
+            }
 
-            var newLection = lectionDto.fromUserToLectionDto();
-            _context.Lections.Add(newLection);
-            _context.SaveChanges();
+            var newLection = lectionDto.fromUserToLection(courseId);
+            Console.WriteLine("id:", newLection.Id);
+            await _lectionRepository.createLection(newLection);
 
             return CreatedAtAction(nameof(getById), new{id = newLection.Id}, newLection.toLectionDto());
         }
 
         [HttpPut]
         [Route("{id}")]
-        public IActionResult updateLection([FromRoute] int id, [FromBody] updateLectionDto lectionDto)
+        public async Task<IActionResult> updateLection([FromRoute] int id, [FromBody] updateLectionDto lectionDto)
         {
-            var lection = _context.Lections.Find(id);
+            var lection = await _lectionRepository.updateLection(id, lectionDto);
 
-            if(lection == null)
-                return NotFound();
-
-            lection.CourseId = lectionDto.CourseId;
-            lection.Title = lectionDto.Title;
-            lection.Content = lectionDto.Content;
-            lection.Lorder = lectionDto.Lorder;
-
-            _context.SaveChanges();
+            if (lection == null)
+                return BadRequest("lection not found");
 
             return Ok(lection.toLectionDto());
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult deleteLection([FromRoute] int id) 
+        public async Task<IActionResult> deleteLection([FromRoute] int id) 
         {
-            var lection = _context.Lections.Find(id);
+            var lection = await _lectionRepository.deleteLection(id);
 
             if(lection == null)
-                return NotFound();
+                return NotFound("Lection does not exist");
 
-            _context.Lections.Remove(lection);
-            _context.SaveChanges(); 
 
             return NoContent();
         }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using StudyPlusBack.Dtos.Inscription;
+using StudyPlusBack.Interfaces;
 using StudyPlusBack.Mappers;
 using StudyPlusBack.Models;
 
@@ -13,26 +14,34 @@ namespace StudyPlusBack.Controllers
     public class InscriptionController : Controller
     {
 
-        public readonly StudyPlusContext _context;
+        private readonly StudyPlusContext _context;
+        private readonly IInscriptionRepository _iInscriptionRepository;
+        private readonly ICourseRepository _courseRepository;
+        private readonly IUserRepository _userRepository;
 
-        public InscriptionController(StudyPlusContext context)
+        public InscriptionController(StudyPlusContext context, IInscriptionRepository iInscriptionRepository,
+            ICourseRepository courseRepository, IUserRepository userRepository)
         {
             _context = context;
+            _iInscriptionRepository = iInscriptionRepository;
+            _courseRepository = courseRepository;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
-        public IActionResult getAll()
+        public async Task<IActionResult> getAll()
         {
-            var inscriptions = _context.Inscriptions.Select(i => i.toInscriptionDto()).ToList();
+            var inscriptions = await _iInscriptionRepository.getAll();
+            var inscriptionDto = inscriptions.Select(i => i.toInscriptionDto());
 
-            return Ok(inscriptions);
+            return Ok(inscriptionDto);
         }
 
         [HttpGet]
         [Route("{id}")]
-        public IActionResult getById ([FromRoute] int id) 
+        public async Task<IActionResult> getById([FromRoute] int id) 
         {
-            var inscription = _context.Inscriptions.Find(id);
+            var inscription = await _iInscriptionRepository.getById(id);
 
             if (inscription == null)
             {
@@ -42,36 +51,38 @@ namespace StudyPlusBack.Controllers
             return Ok(inscription.toInscriptionDto());
         }
 
-        [HttpPost]
-        public IActionResult create([FromBody] createInscriptionDto newInscription)
+        [HttpPost("createInsciption/{userId}/{courseId}")]
+        public async Task<IActionResult> create([FromRoute]int userId, [FromRoute]int courseId, [FromBody] createInscriptionDto newInscription)
         {
+            if(!await _userRepository.userExist(userId))
+            {
+                Console.WriteLine($"Buscando usuario con Id={userId}");
+                return NotFound("user doesnt exist");
+            }
+                
+
+            if (!await _courseRepository.courseExist(courseId))
+                return NotFound("course doesnt exist");
+
             if (newInscription == null)
             {
                 return BadRequest();
             }
 
             var inscriptions = newInscription.fromUserToCreateDto();
-            _context.Inscriptions.Add(inscriptions);
-            _context.SaveChanges();
+            await _iInscriptionRepository.create(inscriptions);
 
             return CreatedAtAction(nameof(getById), new{id = inscriptions.Id}, inscriptions.toInscriptionDto());
         }
 
         [HttpPut]
         [Route("{id}")]
-        public IActionResult updateInscription([FromRoute] int id, [FromBody] updateInscriptionDto inscriptionDto) 
+        public async Task<IActionResult> updateInscription([FromRoute] int id, [FromBody] updateInscriptionDto inscriptionDto) 
         {
-            var inscription = _context.Inscriptions.Find(id);
+            var inscription = await _iInscriptionRepository.update(id, inscriptionDto);
 
             if (inscription == null)
-                return NotFound();
-
-            inscription.UserId = inscriptionDto.UserId;
-            inscription.CourseId = inscriptionDto.CourseId;
-            inscription.InscriptionDate = inscriptionDto.InscriptionDate;
-            inscription.Progress = inscriptionDto.Progress;
-
-            _context.SaveChanges();
+                return NotFound("inscription doesn't exist");
 
             return Ok(inscription);
             
@@ -79,15 +90,12 @@ namespace StudyPlusBack.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult deleteInscription([FromRoute] int id) 
+        public async Task<IActionResult> deleteInscription([FromRoute] int id) 
         {
-            var inscription = _context.Inscriptions.Find(id);
+            var inscription = await _iInscriptionRepository.deleteInscription(id);
 
             if (inscription == null)
-                return NotFound();
-
-            _context.Inscriptions.Remove(inscription);
-            _context.SaveChanges();
+                return NotFound("Inscription doesn't exist");
 
             return NoContent();
 

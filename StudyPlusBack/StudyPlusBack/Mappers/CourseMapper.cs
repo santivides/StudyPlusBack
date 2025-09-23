@@ -10,7 +10,6 @@ namespace StudyPlusBack.Mappers
         {
             return new CourseDto
             {
-                Id = course.Id,
                 Name = course.Name,
                 Description = course.Description,
                 Courselevel = course.Courselevel,

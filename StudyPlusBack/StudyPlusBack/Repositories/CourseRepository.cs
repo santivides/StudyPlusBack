@@ -65,5 +65,10 @@ namespace StudyPlusBack.Repositories
 
             return course;
         }
+
+        public Task<bool> courseExist(int id)
+        {
+            return _context.Courses.AnyAsync(c => c.Id == id);
+        }
     }
 }

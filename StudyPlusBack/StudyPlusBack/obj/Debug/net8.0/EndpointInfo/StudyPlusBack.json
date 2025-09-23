@@ -140,35 +140,6 @@
             "description": "OK"
           }
         }
-      },
-      "post": {
-        "tags": [
-          "Inscription"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/createInscriptionDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/createInscriptionDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/createInscriptionDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
       }
     },
     "/api/inscription/{id}": {
@@ -255,40 +226,62 @@
         }
       }
     },
-    "/api/lection": {
-      "get": {
-        "tags": [
-          "Lection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
+    "/api/inscription/createInsciption/{userId}/{courseId}": {
       "post": {
         "tags": [
-          "Lection"
+          "Inscription"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "courseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/createLectionDto"
+                "$ref": "#/components/schemas/createInscriptionDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/createLectionDto"
+                "$ref": "#/components/schemas/createInscriptionDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/createLectionDto"
+                "$ref": "#/components/schemas/createInscriptionDto"
               }
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/lection": {
+      "get": {
+        "tags": [
+          "Lection"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -403,40 +396,53 @@
         }
       }
     },
-    "/api/LectionProgress": {
-      "get": {
-        "tags": [
-          "LectionProgress"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
+    "/api/lection/{courseId}": {
       "post": {
         "tags": [
-          "LectionProgress"
+          "Lection"
+        ],
+        "parameters": [
+          {
+            "name": "courseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateLPDto"
+                "$ref": "#/components/schemas/createLectionDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateLPDto"
+                "$ref": "#/components/schemas/createLectionDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateLPDto"
+                "$ref": "#/components/schemas/createLectionDto"
               }
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/LectionProgress": {
+      "get": {
+        "tags": [
+          "LectionProgress"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -521,6 +527,57 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/LectionProgress/createLp/{lectionId}/{inscriptionId}": {
+      "post": {
+        "tags": [
+          "LectionProgress"
+        ],
+        "parameters": [
+          {
+            "name": "lectionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "inscriptionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLPDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLPDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLPDto"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -815,11 +872,6 @@
       "createLectionDto": {
         "type": "object",
         "properties": {
-          "courseId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
           "title": {
             "type": "string",
             "nullable": true
@@ -865,11 +917,6 @@
       "updateLectionDto": {
         "type": "object",
         "properties": {
-          "courseId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
           "title": {
             "type": "string",
             "nullable": true

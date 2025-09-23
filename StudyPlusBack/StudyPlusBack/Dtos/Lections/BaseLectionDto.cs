@@ -4,7 +4,6 @@ namespace StudyPlusBack.Dtos.Lections
 {
     public class BaseLectionDto
     {
-        public int? CourseId { get; set; }
 
         public string Title { get; set; } = null!;
 

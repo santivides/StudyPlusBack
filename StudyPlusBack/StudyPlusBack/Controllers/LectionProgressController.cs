@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudyPlusBack.Dtos.LectionProgess;
 using StudyPlusBack.Dtos.Lections;
+using StudyPlusBack.Interfaces;
 using StudyPlusBack.Mappers;
 using StudyPlusBack.Models;
 using System.Reflection.Metadata.Ecma335;
@@ -11,26 +12,35 @@ namespace StudyPlusBack.Controllers
     [Route("api/LectionProgress")]
     public class LectionProgressController : Controller
     {
-        public readonly StudyPlusContext _context;
+        private readonly StudyPlusContext _context;
+        private readonly ILectionProgressRepository _ILectionProgressRepository;
+        private readonly ILectionRepository _ILectionRepository;
+        private readonly IInscriptionRepository _InscriptionRepository;
 
-        public LectionProgressController(StudyPlusContext context)
+
+        public LectionProgressController(StudyPlusContext context, ILectionProgressRepository ILectionProgressRepository,
+            ILectionRepository iLectionRepository, IInscriptionRepository InscriptionRepository)
         {
             _context = context;
+            _ILectionProgressRepository = ILectionProgressRepository;
+            _ILectionRepository = iLectionRepository;
+            _InscriptionRepository = InscriptionRepository;
         }
 
         [HttpGet]
-        public IActionResult getAll()
+        public async Task<IActionResult> getAll()
         {
-            var LectionProgress = _context.LectionProgresses.Select(lp => lp.toLectionPDto()).ToList();
+            var LectionProgress = await _ILectionProgressRepository.getAll();
+            var LPDto = LectionProgress.Select(lp => lp.toLectionPDto());
 
-            return Ok(LectionProgress);
+            return Ok(LPDto);
         }
 
         [HttpGet]
         [Route("{id}")]
-        public IActionResult getById([FromRoute] int id)
+        public async Task<IActionResult> getById([FromRoute] int id)
         {
-            var lectionProgress = _context.LectionProgresses.Find(id);
+            var lectionProgress = await _ILectionProgressRepository.getById(id);
 
             if (lectionProgress == null)
                 return NotFound();
@@ -38,50 +48,43 @@ namespace StudyPlusBack.Controllers
             return Ok(lectionProgress.toLectionPDto());
         }
 
-        [HttpPost]
-        public IActionResult createLP([FromBody] CreateLPDto lp)
+        [HttpPost("createLp/{lectionId}/{inscriptionId}")]
+        public async Task<IActionResult> createLP([FromRoute]int lectionId, [FromRoute] int inscriptionId, [FromBody] CreateLPDto lp)
         {
+            if (!await _ILectionRepository.lectionExist(lectionId))
+                return NotFound("lection does not exist");
+
+            if(!await _InscriptionRepository.inscriptionExist(inscriptionId))
+                return NotFound("inscription does not exist");
+
             if (lp == null)
             {
                 return BadRequest();
             }
 
-            var newLP = lp.fromLectionPToLectionPDto();
-            _context.LectionProgresses.Add(newLP);
-            _context.SaveChanges();
+            var newLP = lp.fromLectionPToLectionPDto(lectionId, inscriptionId);
+            await _ILectionProgressRepository.createLP(newLP);
 
             return CreatedAtAction(nameof(getById), new { lp = newLP.Id }, newLP.toLectionPDto());
         }
 
         [HttpPut]
         [Route("{id}")]
-        public IActionResult updateLp([FromRoute]int id, [FromBody] UpdateLPDto lpDto)
+        public async Task<IActionResult> updateLp([FromRoute]int id, [FromBody] UpdateLPDto lpDto)
         {
-            var lectionP = _context.LectionProgresses.Find(id);
-
-            if (lectionP == null)
-                return NotFound();
-
-            lectionP.InscriptionId = lpDto.InscriptionId;
-            lectionP.LectionId = lpDto.LectionId;
-            lectionP.Completed = lpDto.Completed;
-
-            _context.SaveChanges();
+            var lectionP = await _ILectionProgressRepository.updateLP(id, lpDto);
 
             return Ok(lectionP.toLectionPDto());
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult deleteLectionP([FromRoute] int id)
+        public async Task<IActionResult> deleteLectionP([FromRoute] int id)
         {
-            var lectionP = _context.LectionProgresses.Find(id);
+            var lectionP = await _ILectionProgressRepository.deleteLP(id);
 
             if (lectionP == null)
-                return NotFound();
-
-            _context.LectionProgresses.Remove(lectionP);
-            _context.SaveChanges();
+                return NotFound("Lection progress does not exist");
 
             return NoContent();
         }

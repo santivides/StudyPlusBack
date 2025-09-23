@@ -90,22 +90,6 @@
   },
   {
     "ContainingType": "StudyPlusBack.Controllers.InscriptionController",
-    "Method": "create",
-    "RelativePath": "api/inscription",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "newInscription",
-        "Type": "StudyPlusBack.Dtos.Inscription.createInscriptionDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "StudyPlusBack.Controllers.InscriptionController",
     "Method": "getById",
     "RelativePath": "api/inscription/{id}",
     "HttpMethod": "GET",
@@ -158,6 +142,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "StudyPlusBack.Controllers.InscriptionController",
+    "Method": "create",
+    "RelativePath": "api/inscription/createInsciption/{userId}/{courseId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "courseId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "newInscription",
+        "Type": "StudyPlusBack.Dtos.Inscription.createInscriptionDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "StudyPlusBack.Controllers.LectionController",
     "Method": "getAll",
     "RelativePath": "api/lection",
@@ -170,11 +180,16 @@
   {
     "ContainingType": "StudyPlusBack.Controllers.LectionController",
     "Method": "createLection",
-    "RelativePath": "api/lection",
+    "RelativePath": "api/lection/{courseId}",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
+      {
+        "Name": "courseId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
       {
         "Name": "lectionDto",
         "Type": "StudyPlusBack.Dtos.Lections.createLectionDto",
@@ -264,22 +279,6 @@
   },
   {
     "ContainingType": "StudyPlusBack.Controllers.LectionProgressController",
-    "Method": "createLP",
-    "RelativePath": "api/LectionProgress",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "lp",
-        "Type": "StudyPlusBack.Dtos.LectionProgess.CreateLPDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "StudyPlusBack.Controllers.LectionProgressController",
     "Method": "getById",
     "RelativePath": "api/LectionProgress/{id}",
     "HttpMethod": "GET",
@@ -326,6 +325,32 @@
       {
         "Name": "id",
         "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "StudyPlusBack.Controllers.LectionProgressController",
+    "Method": "createLP",
+    "RelativePath": "api/LectionProgress/createLp/{lectionId}/{inscriptionId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "lectionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "inscriptionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "lp",
+        "Type": "StudyPlusBack.Dtos.LectionProgess.CreateLPDto",
         "IsRequired": true
       }
     ],

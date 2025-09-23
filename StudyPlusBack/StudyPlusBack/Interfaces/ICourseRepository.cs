@@ -10,5 +10,6 @@ namespace StudyPlusBack.Interfaces
         Task<Course> create(Course course);
         Task<Course> update(int id, UpdateCourseDto courseDto);
         Task<Course?> delete(int id);
+        Task<bool> courseExist(int id);
     }
 }

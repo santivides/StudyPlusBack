@@ -9,7 +9,6 @@ namespace StudyPlusBack.Mappers
         {
             return new LectionPDto
             {
-                Id = lp.Id,
 
                 InscriptionId = lp.InscriptionId,
 
@@ -19,13 +18,13 @@ namespace StudyPlusBack.Mappers
             };
         }
 
-        public static LectionProgress fromLectionPToLectionPDto(this CreateLPDto lpDto)
+        public static LectionProgress fromLectionPToLectionPDto(this CreateLPDto lpDto, int lectionId, int inscriptionId)
         {
             return new LectionProgress
             {
-                InscriptionId = lpDto.InscriptionId,
+                InscriptionId = inscriptionId,
 
-                LectionId = lpDto.LectionId,
+                LectionId = lectionId,
 
                 Completed = lpDto.Completed,
             };
