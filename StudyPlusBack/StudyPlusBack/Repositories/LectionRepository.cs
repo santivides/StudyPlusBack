@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudyPlusBack.Dtos.LectionProgess;
 using StudyPlusBack.Dtos.Lections;
+using StudyPlusBack.Helpers;
 using StudyPlusBack.Interfaces;
 using StudyPlusBack.Mappers;
 using StudyPlusBack.Models;
@@ -16,11 +17,28 @@ namespace StudyPlusBack.Repositories
             _context = context;
         }
 
-        public async Task<List<Lection>> GetAll()
+        public async Task<List<Lection>> GetAll(QueryLection query)
         {
-            var lections = await _context.Lections.Include(l => l.LectionProgresses).ToListAsync();
+            var lections = _context.Lections.Include(l => l.LectionProgresses).AsQueryable();
 
-            return lections;
+            if (!string.IsNullOrWhiteSpace(query.Title))
+                lections = lections.Where(l => l.Title.Contains(query.Title));
+
+            if (!string.IsNullOrWhiteSpace(query.Content))
+                lections = lections.Where(l => l.Content.Contains(query.Content));
+
+            if(!string.IsNullOrWhiteSpace(query.SortBy))
+            {
+                if(query.SortBy.Equals("Title", StringComparison.OrdinalIgnoreCase))
+                {
+                    lections = query.IsDescending ? lections.OrderByDescending(l => l.Title)
+                        : lections.OrderBy(l => l.Title);
+                }
+            }
+
+
+
+            return await lections.ToListAsync();
         }
 
         public async Task<Lection?> getById(int id)

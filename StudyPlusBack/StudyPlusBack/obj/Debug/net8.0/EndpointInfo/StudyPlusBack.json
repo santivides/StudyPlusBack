@@ -10,6 +10,45 @@
         "tags": [
           "Course"
         ],
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Active",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -281,6 +320,36 @@
       "get": {
         "tags": [
           "Lection"
+        ],
+        "parameters": [
+          {
+            "name": "Title",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "SortBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "IsDescending",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -714,15 +783,21 @@
   "components": {
     "schemas": {
       "CreateCourseDto": {
+        "required": [
+          "description",
+          "name"
+        ],
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 200,
+            "minLength": 10,
+            "type": "string"
           },
           "description": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string"
           },
           "courselevel": {
             "type": "integer",
@@ -757,19 +832,26 @@
         "additionalProperties": false
       },
       "CreateUserDto": {
+        "required": [
+          "email",
+          "name",
+          "password",
+          "role"
+        ],
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 50,
+            "minLength": 10,
+            "type": "string"
           },
           "email": {
-            "type": "string",
-            "nullable": true
+            "minLength": 15,
+            "type": "string"
           },
           "password": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "role": {
             "type": "integer",
@@ -779,15 +861,21 @@
         "additionalProperties": false
       },
       "UpdateCourseDto": {
+        "required": [
+          "description",
+          "name"
+        ],
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 200,
+            "minLength": 10,
+            "type": "string"
           },
           "description": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string"
           },
           "courselevel": {
             "type": "integer",
@@ -822,11 +910,15 @@
         "additionalProperties": false
       },
       "UpdateUserDto": {
+        "required": [
+          "name"
+        ],
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 50,
+            "minLength": 10,
+            "type": "string"
           },
           "email": {
             "type": "string",
@@ -870,15 +962,22 @@
         "additionalProperties": false
       },
       "createLectionDto": {
+        "required": [
+          "content",
+          "title"
+        ],
         "type": "object",
         "properties": {
           "title": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 200,
+            "minLength": 10,
+            "type": "string"
           },
           "content": {
-            "type": "string",
-            "nullable": true
+            "maximum": 10000,
+            "minimum": 10,
+            "minLength": 1,
+            "type": "string"
           },
           "lorder": {
             "type": "integer",
@@ -915,15 +1014,22 @@
         "additionalProperties": false
       },
       "updateLectionDto": {
+        "required": [
+          "content",
+          "title"
+        ],
         "type": "object",
         "properties": {
           "title": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 200,
+            "minLength": 10,
+            "type": "string"
           },
           "content": {
-            "type": "string",
-            "nullable": true
+            "maximum": 10000,
+            "minimum": 10,
+            "minLength": 1,
+            "type": "string"
           },
           "lorder": {
             "type": "integer",

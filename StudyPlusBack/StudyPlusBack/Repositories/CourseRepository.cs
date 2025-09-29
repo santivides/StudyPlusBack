@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudyPlusBack.Dtos.Courses;
+using StudyPlusBack.Helpers;
 using StudyPlusBack.Interfaces;
 using StudyPlusBack.Models;
 
@@ -13,9 +14,20 @@ namespace StudyPlusBack.Repositories
             _context = context;
         }
 
-        public async Task<List<Course>> GetAll()
+        public async Task<List<Course>> GetAll(QueryCourse query)
         {
-            return await _context.Courses.Include(c => c.Lections).ToListAsync();
+            var courses = _context.Courses.Include(c => c.Lections).AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.Name)) 
+            {
+                courses = courses.Where(s => s.Name.Contains(query.Name));
+            }
+
+            courses = courses.Where(s => s.Active.Equals(query.Active));
+
+            var skipPage = (query.PageNumber - 1 ) * query.PageSize;
+
+            return await courses.Skip(skipPage).Take(query.PageSize).ToListAsync();
         }
 
         public async Task<Course?> getCourse(int id)

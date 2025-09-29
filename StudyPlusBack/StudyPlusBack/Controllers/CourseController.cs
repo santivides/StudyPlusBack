@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudyPlusBack.Dtos.Courses;
+using StudyPlusBack.Helpers;
 using StudyPlusBack.Interfaces;
 using StudyPlusBack.Mappers;
 using StudyPlusBack.Models;
@@ -23,15 +24,18 @@ namespace StudyPlusBack.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> getAll()
+        public async Task<IActionResult> getAll([FromQuery] QueryCourse query)
         {
-            var courses = await _courseRepository.GetAll();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var courses = await _courseRepository.GetAll(query);
             var coursesDto = courses.Select(s => s.toCourseDto());
 
             return Ok(coursesDto);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> getCourse([FromRoute] int id) 
         {
             var courseModel = await _courseRepository.getCourse(id);
@@ -48,6 +52,9 @@ namespace StudyPlusBack.Controllers
         [HttpPost]
         public async Task<IActionResult> create([FromBody] CreateCourseDto courseDto) 
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             if (courseDto == null) 
             {
                 return BadRequest();
@@ -60,9 +67,12 @@ namespace StudyPlusBack.Controllers
         }
 
         [HttpPut]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> update([FromRoute] int id, [FromBody] UpdateCourseDto courseDto) 
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var courseModel = await _courseRepository.update(id, courseDto);
 
             if (courseModel == null)
@@ -75,7 +85,7 @@ namespace StudyPlusBack.Controllers
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> delete([FromRoute] int id)
         {
             var courseId = await _courseRepository.delete(id);

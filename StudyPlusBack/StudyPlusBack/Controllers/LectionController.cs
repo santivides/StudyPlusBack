@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudyPlusBack.Dtos.Lections;
+using StudyPlusBack.Helpers;
 using StudyPlusBack.Interfaces;
 using StudyPlusBack.Mappers;
 using StudyPlusBack.Models;
@@ -24,9 +25,12 @@ namespace StudyPlusBack.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> getAll() 
+        public async Task<IActionResult> getAll([FromQuery] QueryLection query) 
         {
-            var lections = await _lectionRepository.GetAll();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var lections = await _lectionRepository.GetAll(query);
             var lectionsDto = lections.Select(l => l.toLectionDto());
 
             return Ok(lectionsDto);
@@ -66,6 +70,9 @@ namespace StudyPlusBack.Controllers
         [HttpPost("{courseId}")]
         public async Task<IActionResult> createLection([FromRoute]int courseId, [FromBody] createLectionDto lectionDto) 
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             if (!await _courseRepository.courseExist(courseId))
             {
                 return BadRequest("Course does not exist");
@@ -82,6 +89,9 @@ namespace StudyPlusBack.Controllers
         [Route("{id}")]
         public async Task<IActionResult> updateLection([FromRoute] int id, [FromBody] updateLectionDto lectionDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var lection = await _lectionRepository.updateLection(id, lectionDto);
 
             if (lection == null)

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudyPlusBack.Dtos.Users;
+using StudyPlusBack.Helpers;
 using StudyPlusBack.Interfaces;
 using StudyPlusBack.Mappers;
 using StudyPlusBack.Models;
@@ -24,6 +25,9 @@ namespace StudyPlusBack.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var users = await _userRepository.getAll();
             
             var usersDto = users.Select(s => s.toUserDto());
@@ -34,6 +38,9 @@ namespace StudyPlusBack.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var user = await _userRepository.GetById(id);
 
             if (user == null)
@@ -47,6 +54,9 @@ namespace StudyPlusBack.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateUserDto userDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             if (userDto == null)
             {
                 return BadRequest();
@@ -62,6 +72,9 @@ namespace StudyPlusBack.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateUserDto userDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var userModel = await _userRepository.update(id, userDto);
 
             if(userModel == null) 
