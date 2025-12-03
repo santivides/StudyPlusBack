@@ -19,4 +19,11 @@ namespace StudyPlusBack.Dtos.Users
         [Required]
         public byte Role { get; set; }
     }
+
+    public class newUserDto
+    {
+        public string UserName { get; set; }
+        public string Email { get; set; }
+        public string Token { get; set; }
+    }
 }

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace StudyPlusBack.Models;
 
-public partial class StudyPlusContext : DbContext
+public partial class StudyPlusContext : IdentityDbContext<AppUser>
 {
     public StudyPlusContext()
     {
@@ -25,12 +27,28 @@ public partial class StudyPlusContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-GAJEH5U\\SQLEXPRESS; Database=StudyPlus; Trusted_Connection=True; TrustServerCertificate=True;");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
+        //creating roles for the users with IdentityCore
+        List<IdentityRole> roles = new List<IdentityRole>
+        {
+            new IdentityRole
+            {
+                Id = "1",
+                Name = "Admin",
+                NormalizedName = "ADMIN"
+            },
+            new IdentityRole
+            {
+                Id = "0",
+                Name = "User",
+                NormalizedName = "USER"
+            }
+        };
+        modelBuilder.Entity<IdentityRole>().HasData(roles);
+
         modelBuilder.Entity<Course>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Courses__3214EC07FE9D62D6");

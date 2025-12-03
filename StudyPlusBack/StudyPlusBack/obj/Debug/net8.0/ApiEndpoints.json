@@ -481,5 +481,37 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "StudyPlusBack.Controllers.UserController",
+    "Method": "Login",
+    "RelativePath": "api/user/Login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loginDto",
+        "Type": "StudyPlusBack.Dtos.Users.LoginDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "StudyPlusBack.Controllers.UserController",
+    "Method": "Register",
+    "RelativePath": "api/user/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "registerDto",
+        "Type": "StudyPlusBack.Dtos.Users.RegisterDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]
